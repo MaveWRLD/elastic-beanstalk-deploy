@@ -59,7 +59,7 @@ jobs:
 
       - name: Create Elastic Beanstalk application version
         run: |
-          aws elasticbeanstalk create-app-version \
+          aws elasticbeanstalk create-application-version \
             --application-name ${{ env.EB_APPLICATION_NAME }} \
             --version-label ${{ github.sha }} \
             --source-bundle S3Bucket=${{ env.S3_BUCKET_NAME }},S3Key=application-bundle-${{ github.sha }}.zip \
