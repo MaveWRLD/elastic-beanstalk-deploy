@@ -32,6 +32,7 @@ jobs:
 
       - name: Build application with Maven
         run: |
+          chmod +x simple_application/mvnw
           cd simple_application
           ./mvnw clean package -DskipTests=true
 
