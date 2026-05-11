@@ -2,10 +2,9 @@ package org.mave.simple_application;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/hello")
@@ -21,10 +20,10 @@ public class HelloController {
         return ResponseEntity.ok(message);
     }
 
-
-    @GetMapping("/")
-    public String home() {
-        return "App deployed successfully ✅";
+    @PostMapping("/create")
+    public ResponseEntity<HelloModel> createHelloMessage() {
+        HelloModel helloModel = helloService.createHelloMessage();
+        return ResponseEntity.status(HttpStatus.CREATED).body(helloModel);
     }
 
 }
