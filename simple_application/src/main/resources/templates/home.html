@@ -2,9 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .message-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to the Simple Application!</h1>
-    <p th:text="${message}"></p>
+    <div class="message-container">
+        <p id="message" th:text="${message}"></p>
+    </div>
+    <button id="createBtn" onclick="createMessage()">Create New Hello World Message</button>
+
+    <script>
+        function createMessage() {
+            const button = document.getElementById('createBtn');
+            const messageElement = document.getElementById('message');
+
+            button.disabled = true;
+            button.textContent = 'Creating...';
+
+            fetch('/hello/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to create message');
+                }
+            })
+            .then(data => {
+                messageElement.textContent = data.message;
+                button.disabled = false;
+                button.textContent = 'Create New Hello World Message';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                messageElement.textContent = 'Error creating message. Please try again.';
+                button.disabled = false;
+                button.textContent = 'Create New Hello World Message';
+            });
+        }
+    </script>
 </body>
 </html>
